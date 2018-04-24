@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 16:06:30 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 01:23:19 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 13:19:55 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void		fractal_draw(t_fractol *prog, t_fractal *f)
 
 	z = 0;
 	n = 0;
-	f->running_threads = 0;
 	while (z <= f->depth)
 	{
 		start_x = 0;
@@ -46,9 +45,7 @@ void		fractal_draw(t_fractol *prog, t_fractal *f)
 		z++;
 	}
 	while (--n)
-	{
 		pthread_join(threads[n].num, NULL);
-	}
 	mlx_put_image_to_window(prog->mlx, f->window, f->image, 0, 0);
 }
 
@@ -99,7 +96,9 @@ void		fractol_start(t_fractol *prog, char **av)
 void		fractol_exit(t_fractol *prog, char *msg)
 {
 	t_fractal_typeid		type;
+	int						i;
 
+	i = 0;
 	type = 1;
 	while (type < MAX_FRACTAL_TYPEID)
 	{
@@ -108,6 +107,6 @@ void		fractol_exit(t_fractol *prog, char *msg)
 		type++;
 	}
 	if (msg)
-		write(STDERR_FILENO, msg, ft_strlen(msg));
-	exit(msg ? EXIT_FAILURE : EXIT_SUCCESS);
+		i = write(STDERR_FILENO, msg, ft_strlen(msg));
+	exit(i > 0 ? EXIT_FAILURE : EXIT_SUCCESS);
 }

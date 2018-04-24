@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 15:17:31 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 09:06:42 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 13:02:25 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 static void		key_mandelbrot(t_fractal *f, int keycode)
 {
 	if (keycode == K_UP)
-		f->fractal.mandelbrot.cy += SCALE_Y;
+		f->fractal.mandelbrot.cy += f->fractal.mandelbrot.scale * 2;
 	else if (keycode == K_DOWN)
-		f->fractal.mandelbrot.cy -= SCALE_Y;
+		f->fractal.mandelbrot.cy -= f->fractal.mandelbrot.scale * 2;
 	else if (keycode == K_LEFT)
-		f->fractal.mandelbrot.cx += SCALE_X;
+		f->fractal.mandelbrot.cx += f->fractal.mandelbrot.scale * 2;
 	else if (keycode == K_RIGHT)
-		f->fractal.mandelbrot.cx -= SCALE_X;
+		f->fractal.mandelbrot.cx -= f->fractal.mandelbrot.scale * 2;
 	else if (keycode == K_DIV)
 		f->fractal.mandelbrot.scale *= 2;
 	else if (keycode == K_MULT)
@@ -31,13 +31,13 @@ static void		key_mandelbrot(t_fractal *f, int keycode)
 static void		key_julia(t_fractal *f, int keycode)
 {
 	if (keycode == K_UP)
-		f->fractal.julia.cy += SCALE_Y;
+		f->fractal.julia.cy += f->fractal.julia.scale * 2;
 	else if (keycode == K_DOWN)
-		f->fractal.julia.cy -= SCALE_Y;
+		f->fractal.julia.cy -= f->fractal.julia.scale * 2;
 	else if (keycode == K_LEFT)
-		f->fractal.julia.cx += SCALE_X;
+		f->fractal.julia.cx += f->fractal.julia.scale * 2;
 	else if (keycode == K_RIGHT)
-		f->fractal.julia.cx -= SCALE_X;
+		f->fractal.julia.cx -= f->fractal.julia.scale * 2;
 	else if (keycode == K_DIV)
 		f->fractal.julia.scale *= 2;
 	else if (keycode == K_MULT)

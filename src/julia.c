@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 01:11:35 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 01:08:29 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 13:19:33 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,13 @@ void		*julia(void *ptr)
 		}
 		i++;
 	}
-	pthread_mutex_lock(&thread->ondraw->mutex);
-	thread->ondraw->running_threads--;
-	pthread_mutex_unlock(&thread->ondraw->mutex);
 	return (NULL);
 }
 
 void		julia_reset(t_fractal *f)
 {
 	f->name = "Julia";
-	f->max_iter = 50;
+	f->max_iter = 10;
 	f->depth = 1;
 	f->type = JULIA;
 	f->fractal.julia.cst.r = -0.7;

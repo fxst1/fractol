@@ -6,11 +6,11 @@
 #    By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/12 10:57:23 by fxst1             #+#    #+#              #
-#    Updated: 2018/04/23 18:36:45 by fxst1            ###   ########.fr        #
+#    Updated: 2018/04/24 13:13:12 by fxst1            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 CC = cc
-FLAGS = -Wall -Wextra -Werror -Wl,-rpath,./fmod/api/lowlevel/lib/x86_64/ -g
+FLAGS = -Wall -Wextra -Ofast -Werror -Wl,-rpath,./fmod/api/lowlevel/lib/x86_64/ -g
 NAME = fractol
 INC = -I inc/ -I minilibx/ -I fmod/fmod/inc
 LIBS = -lpthread -lm -L. -lmlx -lXext -lX11 -L./fmod/api/lowlevel/lib/x86_64/ -lfmod

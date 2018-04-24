@@ -6,34 +6,19 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/22 10:57:41 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 09:12:25 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 12:55:35 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-
-static unsigned int		convert(unsigned int rgb565)
-{
-	unsigned int		r;
-	unsigned int		g;
-	unsigned int		b;
-
-	r = (rgb565 & 0xF800) >> 11;
-	g = (rgb565 & 0x7E0) >> 5;
-	b = (rgb565 & 0x1F);
-	r = (r << 3) | (r >> 2);
-	g = (g * 255 + 31) / 63;
-	b = (b * 255 + 12) / 31;
-	return ((r << 16) | (g << 8) | b);
-}
 
 void					psycolors(t_fractal *f, int x, int y, int iter)
 {
 	//0xf7df, 0xff5a, 0x07ff, 0x7ffa, 0xf7ff
 	unsigned int		color;
 	static unsigned int colors[] = {
-		0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xf7bb, 0xff38, 0xff59, 0x001f, 0x895c,
-		0xa145, 0xddd0, 0x5cf4, 0x7fe0, 0xd343, 0xfbea, 0x64bd, 0xffdb, 0xd8a7, 0x07ff,
+		0xffffff, 0xfdf4e7, 0xf3fccf, 0xc5fbb7, 0xa0fac4, 0x89f8f8, 0x72a8f7, 0x7a5bf6, 0xd145f5, 0xf42fa6,
+		0xF42A8E, 0xF52576, 0xF5215C, 0xF61C42, 0xF71726, 0xF71C13, 0xF8310E, 0xF84709, 0xF95D04, 0xF97500,
 		0x0011, 0x0451, 0xbc21, 0xad55, 0x0320, 0xbdad, 0x8811, 0x5345, 0xfc60, 0x9999,
 		0x8800, 0xecaf, 0x8df1, 0x49f1, 0x2a69, 0x067a, 0x901a, 0xf8b2, 0x05ff, 0x6b4d,
 		0x1c9f, 0xd48e, 0xb104, 0xffde, 0x2444, 0xf81f, 0xdefb, 0xffdf, 0xfea0, 0xdd24,
@@ -52,6 +37,6 @@ void					psycolors(t_fractal *f, int x, int y, int iter)
 	if (iter == f->max_iter)
 		color = 0xffffff;
 	else
-		color = convert(colors[iter % 142]);
+		color = colors[iter % 142];
 	put_pixel(f->image, x, y, color);
 }

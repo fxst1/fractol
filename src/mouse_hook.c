@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 10:58:06 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 08:42:26 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 13:29:36 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,27 +76,15 @@ int				mouse_move_hook(int x, int y, void *ptr)
 	t_fractal	*f;
 
 	f = (t_fractal*)ptr;
-	if (f->type == JULIA)
+	if (f->type == JULIA && x >= 0 && x < FRACTAL_WIDTH &&
+							y >= 0 && y < FRACTAL_HEIGHT)
 	{
-		if (x >= FRACTAL_WIDTH / 2)
-			f->fractal.julia.cst.r = (float)x / FRACTAL_WIDTH;
-		else
-			f->fractal.julia.cst.r = -((float)x / FRACTAL_WIDTH);
-		if (f->fractal.julia.cst.r < -0.48)
-			f->fractal.julia.cst.r = 0.48;
-		else if (f->fractal.julia.cst.r > 1.2)
-			f->fractal.julia.cst.r = 1.2;
-		if (y >= FRACTAL_HEIGHT / 2)
-			f->fractal.julia.cst.i = (float)y / FRACTAL_HEIGHT;
-		else
-			f->fractal.julia.cst.i = -((float)y / FRACTAL_HEIGHT);
-		if (f->fractal.julia.cst.i < -1.2)
-			f->fractal.julia.cst.i = -1.2;
-		else if (f->fractal.julia.cst.i > 1.2)
-			f->fractal.julia.cst.i = 1.2;
+		f->fractal.julia.cst.r = (x - FRACTAL_WIDTH / 2) *
+								f->fractal.julia.scale + f->fractal.julia.cx;
+		f->fractal.julia.cst.i = (y - FRACTAL_HEIGHT / 2) *
+								f->fractal.julia.scale + f->fractal.julia.cy;
+		fractal_draw(f->prog, f);
 	}
-	//printf("%d: %lf, %lf\n", f->max_iter, f->fractal.julia.cst.r, f->fractal.julia.cst.i);
-	fractal_draw(f->prog, f);
 	return (0);
 	(void)x;
 	(void)y;

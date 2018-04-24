@@ -6,13 +6,13 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 01:11:35 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/23 21:29:40 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 11:33:33 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void	mandelbrot2(t_fractol_thread *thread, double i, double j, double x, double y)
+static void	mandelbrot2(t_fractol_thread *thread, double i, double j, t_complex c)
 {
 	int		iter;
 	double	zx;
@@ -27,8 +27,8 @@ static void	mandelbrot2(t_fractol_thread *thread, double i, double j, double x, 
 	zy2 = 0;
 	while (zx2 + zy2 < 4 && iter < thread->ondraw->max_iter)
 	{
-		zy = 2 * zx * zy + y;
-		zx = zx2 - zy2 + x;
+		zy = 2 * zx * zy + c.i;
+		zx = zx2 - zy2 + c.r;
 		zx2 = zx * zx;
 		zy2 = zy * zy;
 		iter++;
@@ -40,8 +40,7 @@ void		*mandelbrot(void *ptr)
 {
 	int					i;
 	int					j;
-	double				x;
-	double				y;
+	t_complex			c;
 	t_fractol_thread	*thread;
 
 	thread = (t_fractol_thread*)ptr;
@@ -49,20 +48,17 @@ void		*mandelbrot(void *ptr)
 	while (i < thread->y_max)
 	{
 		j = thread->x;
-		y = (i - FRACTAL_HEIGHT / 2) * thread->ondraw->fractal.mandelbrot.scale
+		c.i = (i - FRACTAL_HEIGHT / 2) * thread->ondraw->fractal.mandelbrot.scale
 			+ thread->ondraw->fractal.mandelbrot.cy;
 		while (j < thread->x_max)
 		{
-			x = (j - FRACTAL_WIDTH / 2) * thread->ondraw->fractal.mandelbrot.scale
+			c.r = (j - FRACTAL_WIDTH / 2) * thread->ondraw->fractal.mandelbrot.scale
 				+ thread->ondraw->fractal.mandelbrot.cx;
-			mandelbrot2(thread, i, j, x, y);
+			mandelbrot2(thread, i, j, c);
 			j++;
 		}
 		i++;
 	}
-	pthread_mutex_lock(&thread->ondraw->mutex);
-	thread->ondraw->running_threads--;
-	pthread_mutex_unlock(&thread->ondraw->mutex);
 	return (NULL);
 }
 

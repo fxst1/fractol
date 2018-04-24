@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 16:37:49 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 09:05:46 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 13:16:32 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdint.h>
-# define MAX_FRACTAL_TYPEID 4
+# define MAX_FRACTAL_TYPEID 5
 # define FRACTOL_MAX_THREADS_3D 2
-# define FRACTOL_MAX_THREADS_2D 16
+# define FRACTOL_MAX_THREADS_2D 30
 # define FRACTOL_MAX_THREADS FRACTOL_MAX_THREADS_2D * FRACTOL_MAX_THREADS_3D
 # define WINDOW_WIDTH 1000
 # define WINDOW_HEIGHT 1000
@@ -54,6 +54,13 @@
 struct s_fractol;
 struct s_fractol_thread;
 
+typedef struct			s_coord
+{
+	double				x;
+	double				y;
+	double				z;
+}						t_coord;
+
 typedef struct			s_complex
 {
 	double				r;
@@ -69,7 +76,8 @@ typedef enum			e_fractal_typeid
 	NONE,
 	MANDELBROT,
 	JULIA,
-	BSHIP
+	BSHIP,
+	MANDELBULB
 }						t_fractal_typeid;
 
 /*
@@ -119,6 +127,31 @@ typedef struct			s_bship
 	double				scale;
 }						t_bship;
 
+/*
+**	FRACTAL DATA TYPE ID 4: Mandelbulb
+**
+**		z_r : center x
+**		z_i : center y
+**		scale : zoom
+*/
+
+typedef struct			s_mandelbulb
+{
+	double				cx;
+	double				cy;
+	double				scale;
+	double				xy;
+	double				xz;
+	double				yz;
+	double				cxy;
+	double				cxz;
+	double				cyz;
+	double				sxy;
+	double				sxz;
+	double				syz;
+	t_coord				coord;
+
+}						t_mandelbulb;
 
 /*
 **	ALL FRACTAL DATA TYPES
@@ -129,6 +162,7 @@ typedef union			s_fractal_data
 	t_mandelbrot		mandelbrot;
 	t_julia				julia;
 	t_bship				bship;
+	t_mandelbulb		mbulb;
 }						t_fractal_data;
 
 /*

@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 23:21:42 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/23 22:38:40 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 13:06:48 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void		usage(void)
 {
-	write(STDOUT_FILENO, "[mandelbrot|julia|bs]\n", 22);
+	int		i;
+
+	i = write(STDOUT_FILENO, "[mandelbrot|julia|bs]\n", 22);
+	(void)i;
 }
 
 int				main(int ac, char **av)
