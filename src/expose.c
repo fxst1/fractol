@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stop_fmod.c                                        :+:      :+:    :+:   */
+/*   expose.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/20 23:47:18 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/21 00:38:31 by fxst1            ###   ########.fr       */
+/*   Created: 2018/04/23 22:27:24 by fxst1             #+#    #+#             */
+/*   Updated: 2018/04/23 22:38:53 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void			stop_fmod(t_fractol *f)
+int			expose_hook(void *ptr)
 {
-	FMOD_System_Close(f->system);
-	FMOD_System_Release(f->system);
+	t_fractal	*f;
+
+	f = (t_fractal*)ptr;
+	fractol_draw(f->prog);
+	return (0);
 }

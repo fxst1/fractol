@@ -1,61 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mandelbrot.c                                       :+:      :+:    :+:   */
+/*   julia.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 01:11:35 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/23 21:29:40 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 01:08:29 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void	mandelbrot2(t_fractol_thread *thread, double i, double j, double x, double y)
+static void	julia2(t_fractol_thread *thread, double i, double j, t_complex z)
 {
-	int		iter;
-	double	zx;
-	double	zy;
-	double	zx2;
-	double	zy2;
+	int			iter;
+	double		tmp;
+	t_complex	tmp2;
 
 	iter = 0;
-	zx =  0;
-	zy = 0;
-	zx2 = 0;
-	zy2 = 0;
-	while (zx2 + zy2 < 4 && iter < thread->ondraw->max_iter)
+	tmp = z.r;
+	tmp2 = thread->ondraw->fractal.julia.cst;
+	while (z.r * z.r + z.i * z.i < 4 && iter < thread->ondraw->max_iter)
 	{
-		zy = 2 * zx * zy + y;
-		zx = zx2 - zy2 + x;
-		zx2 = zx * zx;
-		zy2 = zy * zy;
+		tmp = z.r;
+		z.r = z.r * z.r - z.i * z.i + tmp2.r;
+		z.i = 2 * tmp * z.i + tmp2.i;
 		iter++;
 	}
 	(*thread->ondraw->draw_point)(thread->ondraw, j, i, iter);
 }
 
-void		*mandelbrot(void *ptr)
+void		*julia(void *ptr)
 {
 	int					i;
 	int					j;
-	double				x;
-	double				y;
 	t_fractol_thread	*thread;
+	t_complex			c;
 
 	thread = (t_fractol_thread*)ptr;
 	i = thread->y;
 	while (i < thread->y_max)
 	{
 		j = thread->x;
-		y = (i - FRACTAL_HEIGHT / 2) * thread->ondraw->fractal.mandelbrot.scale
-			+ thread->ondraw->fractal.mandelbrot.cy;
+		c.i = (i - FRACTAL_HEIGHT / 2) * (thread->ondraw->fractal.julia.scale)
+			+ thread->ondraw->fractal.julia.cy;
 		while (j < thread->x_max)
 		{
-			x = (j - FRACTAL_WIDTH / 2) * thread->ondraw->fractal.mandelbrot.scale
-				+ thread->ondraw->fractal.mandelbrot.cx;
-			mandelbrot2(thread, i, j, x, y);
+			c.r = (j - FRACTAL_WIDTH / 2) * (thread->ondraw->fractal.julia.scale)
+				+ thread->ondraw->fractal.julia.cx;
+			julia2(thread, i, j, c);
 			j++;
 		}
 		i++;
@@ -66,15 +60,17 @@ void		*mandelbrot(void *ptr)
 	return (NULL);
 }
 
-void		mandelbrot_reset(t_fractal *f)
+void		julia_reset(t_fractal *f)
 {
-	f->name = "mandelbrot";
-	f->max_iter = 300;
+	f->name = "Julia";
+	f->max_iter = 50;
 	f->depth = 1;
-	f->type = MANDELBROT;
-	f->fractal.mandelbrot.cx = -0.5;
-	f->fractal.mandelbrot.cy = 2.0;
-	f->fractal.mandelbrot.scale = 1.0 / 256;
-	f->draw_fractal = &mandelbrot;
-	f->reset_fractal = &mandelbrot_reset;
+	f->type = JULIA;
+	f->fractal.julia.cst.r = -0.7;
+	f->fractal.julia.cst.i = -0.27015;
+	f->fractal.julia.cx = 0;
+	f->fractal.julia.cy = 2.0;
+	f->fractal.julia.scale = 1.0 / 256;
+	f->draw_fractal = &julia;
+	f->reset_fractal = &julia_reset;
 }

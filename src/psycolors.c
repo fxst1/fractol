@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/22 10:57:41 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/23 12:14:19 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 09:12:25 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ static unsigned int		convert(unsigned int rgb565)
 	return ((r << 16) | (g << 8) | b);
 }
 
-void	psycolors(t_fractol *f, t_fractol_thread *thread,
-					int iter)
+void					psycolors(t_fractal *f, int x, int y, int iter)
 {
+	//0xf7df, 0xff5a, 0x07ff, 0x7ffa, 0xf7ff
 	unsigned int		color;
 	static unsigned int colors[] = {
-		0xf7df, 0xff5a, 0x07ff, 0x7ffa, 0xf7ff, 0xf7bb, 0xff38, 0xff59, 0x001f, 0x895c,
+		0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xf7bb, 0xff38, 0xff59, 0x001f, 0x895c,
 		0xa145, 0xddd0, 0x5cf4, 0x7fe0, 0xd343, 0xfbea, 0x64bd, 0xffdb, 0xd8a7, 0x07ff,
 		0x0011, 0x0451, 0xbc21, 0xad55, 0x0320, 0xbdad, 0x8811, 0x5345, 0xfc60, 0x9999,
 		0x8800, 0xecaf, 0x8df1, 0x49f1, 0x2a69, 0x067a, 0x901a, 0xf8b2, 0x05ff, 0x6b4d,
@@ -49,6 +49,9 @@ void	psycolors(t_fractol *f, t_fractol_thread *thread,
 		0xffe0, 0x9e66, 0x0000
 	};
 
-	color = convert(colors[iter % 142]);
-	put_pixel(f->img, thread->x, thread->y, color);
+	if (iter == f->max_iter)
+		color = 0xffffff;
+	else
+		color = convert(colors[iter % 142]);
+	put_pixel(f->image, x, y, color);
 }

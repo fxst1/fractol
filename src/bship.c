@@ -1,61 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mandelbrot.c                                       :+:      :+:    :+:   */
+/*   bship.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 01:11:35 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/23 21:29:40 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 09:16:35 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void	mandelbrot2(t_fractol_thread *thread, double i, double j, double x, double y)
+static void	bship2(t_fractol_thread *thread, double i, double j, t_complex c)
 {
-	int		iter;
-	double	zx;
-	double	zy;
-	double	zx2;
-	double	zy2;
+	int			iter;
+	t_complex	z;
+	double		tmp;
 
 	iter = 0;
-	zx =  0;
-	zy = 0;
-	zx2 = 0;
-	zy2 = 0;
-	while (zx2 + zy2 < 4 && iter < thread->ondraw->max_iter)
+	z.r = 0;
+	z.i = 0;
+	tmp = 0;
+	while (z.r * z.r + z.i * z.i < 4 && iter < thread->ondraw->max_iter)
 	{
-		zy = 2 * zx * zy + y;
-		zx = zx2 - zy2 + x;
-		zx2 = zx * zx;
-		zy2 = zy * zy;
+		tmp = z.r * z.r - z.i * z.i + c.r;
+		z.i = 2 * fabs(z.r * z.i) + c.i;
+		z.r = tmp;
 		iter++;
 	}
+//	printf("%lf - %lf\n", c.r, c.i);
 	(*thread->ondraw->draw_point)(thread->ondraw, j, i, iter);
 }
 
-void		*mandelbrot(void *ptr)
+void		*bship(void *ptr)
 {
 	int					i;
 	int					j;
-	double				x;
-	double				y;
 	t_fractol_thread	*thread;
+	t_complex			c;
 
 	thread = (t_fractol_thread*)ptr;
 	i = thread->y;
 	while (i < thread->y_max)
 	{
 		j = thread->x;
-		y = (i - FRACTAL_HEIGHT / 2) * thread->ondraw->fractal.mandelbrot.scale
-			+ thread->ondraw->fractal.mandelbrot.cy;
+		c.i = (i - FRACTAL_HEIGHT / 2) * (thread->ondraw->fractal.bship.scale)
+			+ thread->ondraw->fractal.bship.cy;
 		while (j < thread->x_max)
 		{
-			x = (j - FRACTAL_WIDTH / 2) * thread->ondraw->fractal.mandelbrot.scale
-				+ thread->ondraw->fractal.mandelbrot.cx;
-			mandelbrot2(thread, i, j, x, y);
+			c.r = (j - FRACTAL_WIDTH / 2) * (thread->ondraw->fractal.bship.scale)
+				+ thread->ondraw->fractal.bship.cx;
+			bship2(thread, i, j, c);
 			j++;
 		}
 		i++;
@@ -66,15 +62,15 @@ void		*mandelbrot(void *ptr)
 	return (NULL);
 }
 
-void		mandelbrot_reset(t_fractal *f)
+void		bship_reset(t_fractal *f)
 {
-	f->name = "mandelbrot";
-	f->max_iter = 300;
+	f->name = "Burning Ship";
+	f->max_iter = 50;
 	f->depth = 1;
-	f->type = MANDELBROT;
-	f->fractal.mandelbrot.cx = -0.5;
-	f->fractal.mandelbrot.cy = 2.0;
-	f->fractal.mandelbrot.scale = 1.0 / 256;
-	f->draw_fractal = &mandelbrot;
-	f->reset_fractal = &mandelbrot_reset;
+	f->type = BSHIP;
+	f->fractal.bship.cx = -0.431250;
+	f->fractal.bship.cy = 1.115625;
+	f->fractal.bship.scale = 0.003125;
+	f->draw_fractal = &bship;
+	f->reset_fractal = &bship_reset;
 }

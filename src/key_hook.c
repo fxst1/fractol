@@ -6,93 +6,95 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 15:17:31 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/23 11:53:10 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/04/24 09:06:42 by fxst1            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	zoom_out(t_fractol *f)
+static void		key_mandelbrot(t_fractal *f, int keycode)
 {
-	if (f->zoom / 2 >= 1)
-		f->zoom /= 2;
+	if (keycode == K_UP)
+		f->fractal.mandelbrot.cy += SCALE_Y;
+	else if (keycode == K_DOWN)
+		f->fractal.mandelbrot.cy -= SCALE_Y;
+	else if (keycode == K_LEFT)
+		f->fractal.mandelbrot.cx += SCALE_X;
+	else if (keycode == K_RIGHT)
+		f->fractal.mandelbrot.cx -= SCALE_X;
+	else if (keycode == K_DIV)
+		f->fractal.mandelbrot.scale *= 2;
+	else if (keycode == K_MULT)
+		f->fractal.mandelbrot.scale /= 2;
 }
 
-void	zoom_in(t_fractol *f)
+static void		key_julia(t_fractal *f, int keycode)
 {
-	f->zoom *= 2;
+	if (keycode == K_UP)
+		f->fractal.julia.cy += SCALE_Y;
+	else if (keycode == K_DOWN)
+		f->fractal.julia.cy -= SCALE_Y;
+	else if (keycode == K_LEFT)
+		f->fractal.julia.cx += SCALE_X;
+	else if (keycode == K_RIGHT)
+		f->fractal.julia.cx -= SCALE_X;
+	else if (keycode == K_DIV)
+		f->fractal.julia.scale *= 2;
+	else if (keycode == K_MULT)
+		f->fractal.julia.scale /= 2;
 }
 
-void	permutation_colors(t_fractol *f)
+static void		key_bship(t_fractal *f, int keycode)
 {
-	if (f->draw_point == &draw_red_point)
-	{
-		f->filter_name = "1";
-		f->draw_point = &draw_blue_point;
-	}
-	else if (f->draw_point == &draw_blue_point)
-	{
-		f->filter_name = "2";
-		f->draw_point = &draw_green_point;
-	}
-	else if (f->draw_point == &draw_green_point)
-	{
-		f->filter_name = "3";
-		f->draw_point = &psycolors;
-	}
-	else
-	{
-		f->filter_name = "4";
+	if (keycode == K_UP)
+		f->fractal.bship.cy += f->fractal.bship.scale * 2;
+	else if (keycode == K_DOWN)
+		f->fractal.bship.cy -= f->fractal.bship.scale * 2;
+	else if (keycode == K_LEFT)
+		f->fractal.bship.cx += f->fractal.bship.scale * 2;
+	else if (keycode == K_RIGHT)
+		f->fractal.bship.cx -= f->fractal.bship.scale * 2;
+	else if (keycode == K_DIV)
+		f->fractal.bship.scale *= 2;
+	else if (keycode == K_MULT)
+		f->fractal.bship.scale /= 2;
+}
+
+static void		swap_colors(t_fractal *f)
+{
+	if (f->draw_point == &psycolors)
 		f->draw_point = &draw_red_point;
-	}
+	else if (f->draw_point == &draw_red_point)
+		f->draw_point = &draw_green_point;
+	else if (f->draw_point == &draw_green_point)
+		f->draw_point = &draw_blue_point;
+	else
+		f->draw_point = &psycolors;
 }
 
 int		key_hook(int keycode, void *ptr)
 {
-	t_fractol	*f;
+	t_fractal	*f;
 
-	f = (t_fractol*)ptr;
-	//printf("%d\n", keycode);
-	if (keycode == K_R)
+	f = (t_fractal*)ptr;
+	if (keycode == K_ESC)
+		fractol_exit(f->prog, NULL);
+	else if (keycode == K_R)
 		(*f->reset_fractal)(f);
-	else if (keycode == K_UP)
-	{
-		f->y1 += SCALE_Y;
-		f->y2 += SCALE_Y;
-	}
-	else if (keycode == K_DOWN)
-	{
-		f->y1 -= SCALE_Y;
-		f->y2 -= SCALE_Y;
-	}
-	else if (keycode == K_LEFT)
-	{
-		f->x1 += SCALE_X;
-		f->x2 += SCALE_X;
-	}
-	else if (keycode == K_RIGHT)
-	{
-		f->x1 -= SCALE_X;
-		f->x2 -= SCALE_X;
-	}
-	else if (keycode == K_DIV)
-		zoom_out(f);
-	else if (keycode == K_MULT)
-		zoom_in(f);
-	else if (keycode == K_PLUS)
-	{
-		f->max_iteration++;
-		if (f->max_iteration > MAX_ITERATION)
-			f->max_iteration = MAX_ITERATION;
-	}
+	else if (keycode == K_SPACE)
+		f->enable3d = !f->enable3d;
 	else if (keycode == K_MINUS)
-	{
-		if (f->max_iteration > 1)
-			f->max_iteration--;
-	}
+		f->max_iter -= 10;
+	else if (keycode == K_PLUS)
+		f->max_iter += 10;
 	else if (keycode == K_TAB)
-		permutation_colors(f);
-	else if (keycode == K_ESC)
-		stop_fractol(f);
+		swap_colors(f);
+	else if (f->type == MANDELBROT)
+		key_mandelbrot(f, keycode);
+	else if (f->type == JULIA)
+		key_julia(f, keycode);
+	else if (f->type == BSHIP)
+		key_bship(f, keycode);
+	fractal_draw(f->prog, f);
 	return (0);
 }
