@@ -6,17 +6,17 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/20 23:21:42 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 13:06:48 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/06/12 19:08:23 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void		usage(void)
+void			usage(void)
 {
 	int		i;
 
-	i = write(STDOUT_FILENO, "[mandelbrot|julia|bs]\n", 22);
+	i = write(STDOUT_FILENO, "[mandelbrot|julia|bship]\n", 25);
 	(void)i;
 }
 

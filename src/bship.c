@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 01:11:35 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 09:16:35 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/06/12 18:59:44 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	bship2(t_fractol_thread *thread, double i, double j, t_complex c)
 		z.r = tmp;
 		iter++;
 	}
-//	printf("%lf - %lf\n", c.r, c.i);
 	(*thread->ondraw->draw_point)(thread->ondraw, j, i, iter);
 }
 
@@ -49,16 +48,14 @@ void		*bship(void *ptr)
 			+ thread->ondraw->fractal.bship.cy;
 		while (j < thread->x_max)
 		{
-			c.r = (j - FRACTAL_WIDTH / 2) * (thread->ondraw->fractal.bship.scale)
+			c.r = (j - FRACTAL_WIDTH / 2) *
+				(thread->ondraw->fractal.bship.scale)
 				+ thread->ondraw->fractal.bship.cx;
 			bship2(thread, i, j, c);
 			j++;
 		}
 		i++;
 	}
-	pthread_mutex_lock(&thread->ondraw->mutex);
-	thread->ondraw->running_threads--;
-	pthread_mutex_unlock(&thread->ondraw->mutex);
 	return (NULL);
 }
 

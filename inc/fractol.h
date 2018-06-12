@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 16:37:49 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 13:16:32 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/06/12 19:15:08 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FRACTOL_H
 # include <mlx.h>
 # include <pthread.h>
-# include <fmod.h>
 # include <stdlib.h>
 # include <math.h>
 # include <unistd.h>
@@ -24,8 +23,8 @@
 # define FRACTOL_MAX_THREADS_3D 2
 # define FRACTOL_MAX_THREADS_2D 30
 # define FRACTOL_MAX_THREADS FRACTOL_MAX_THREADS_2D * FRACTOL_MAX_THREADS_3D
-# define WINDOW_WIDTH 1000
-# define WINDOW_HEIGHT 1000
+# define WINDOW_WIDTH 2560
+# define WINDOW_HEIGHT 1440
 # define FOOTER_HEIGHT 50
 # define FOOTER_WIDTH WINDOW_WIDTH
 # define FRACTAL_WIDTH WINDOW_WIDTH
@@ -34,23 +33,41 @@
 # define MAX_ZOOM 1000
 # define SCALE_Y 0.1
 # define SCALE_X 0.1
-# define K_MULT 65450
-# define K_DIV 65455
-# define K_PLUS 65451
-# define K_MINUS 65453
-# define K_LEFT 65361
-# define K_RIGHT 65363
-# define K_UP 65362
-# define K_DOWN 65364
-# define K_ESC 65307
-# define K_TAB 65289
-# define K_SPACE 32
-# define K_R 114
-# define M_LEFT 1
-# define M_RIGHT 3
-# define M_SCROLL_DOWN 4
-# define M_SCROLL_UP 6
-
+# ifdef linux
+#  define K_MULT 65450
+#  define K_DIV 65455
+#  define K_PLUS 65451
+#  define K_MINUS 65453
+#  define K_LEFT 65361
+#  define K_RIGHT 65363
+#  define K_UP 65362
+#  define K_DOWN 65364
+#  define K_ESC 65307
+#  define K_TAB 65289
+#  define K_SPACE 32
+#  define K_R 114
+#  define M_LEFT 1
+#  define M_RIGHT 3
+#  define M_SCROLL_DOWN 4
+#  define M_SCROLL_UP 6
+# else
+#  define K_MULT 67
+#  define K_DIV 75
+#  define K_PLUS 69
+#  define K_MINUS 78
+#  define K_LEFT 123
+#  define K_RIGHT 124
+#  define K_UP 126
+#  define K_DOWN 125
+#  define K_ESC 53
+#  define K_TAB 48
+#  define K_SPACE 32
+#  define K_R 15
+#  define M_LEFT 1
+#  define M_RIGHT 2
+#  define M_SCROLL_DOWN 4
+#  define M_SCROLL_UP 6
+#endif
 struct s_fractol;
 struct s_fractol_thread;
 

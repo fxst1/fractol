@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 14:48:21 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 01:16:53 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/06/12 19:03:27 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,28 @@ void				fractal_destroy(t_fractol *prog, t_fractal *f)
 	}
 }
 
+static void			fractal_create_hook(t_fractal *f)
+{
+	if (f->type == MANDELBROT)
+		f->reset_fractal = &mandelbrot_reset;
+	else if (f->type == BSHIP)
+		f->reset_fractal = &bship_reset;
+	else if (f->type == JULIA)
+	{
+		f->reset_fractal = &julia_reset;
+		mlx_hook(f->window, 6, (1L << 6), &mouse_move_hook, f);
+	}
+	mlx_mouse_hook(f->window, &mouse_hook, f);
+	mlx_key_hook(f->window, &key_hook, f);
+	(*f->reset_fractal)(f);
+}
+
 t_fractal			*fractal_create(t_fractol *prog, t_fractal_typeid type)
 {
 	t_fractal	*f;
 
-	if (type == NONE)
-		return (NULL);
-	else
+	f = NULL;
+	if (type != NONE)
 	{
 		f = (t_fractal*)malloc(sizeof(t_fractal));
 		if (!f)
@@ -73,18 +88,7 @@ t_fractal			*fractal_create(t_fractol *prog, t_fractal_typeid type)
 		f->image = mlx_new_image(prog->mlx, FRACTAL_WIDTH, FRACTAL_HEIGHT);
 		if (!f->image)
 			fractol_exit(prog, "Cannot create image\n");
-		if (f->type == MANDELBROT)
-			f->reset_fractal = &mandelbrot_reset;
-		else if (f->type == BSHIP)
-			f->reset_fractal = &bship_reset;
-		else if (f->type == JULIA)
-		{
-			f->reset_fractal = &julia_reset;
-			mlx_hook(f->window, 6, (1L << 6), &mouse_move_hook, f);
-		}
-		mlx_mouse_hook(f->window, &mouse_hook, f);
-		mlx_key_hook(f->window, &key_hook, f);
-		(*f->reset_fractal)(f);
+		fractal_create_hook(f);
 	}
 	return (f);
 }

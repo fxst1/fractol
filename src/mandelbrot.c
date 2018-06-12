@@ -6,13 +6,14 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 01:11:35 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 11:33:33 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/06/12 19:09:32 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void	mandelbrot2(t_fractol_thread *thread, double i, double j, t_complex c)
+static void	mandelbrot2(t_fractol_thread *thread, double i, double j,
+		t_complex c)
 {
 	int		iter;
 	double	zx;
@@ -21,7 +22,7 @@ static void	mandelbrot2(t_fractol_thread *thread, double i, double j, t_complex 
 	double	zy2;
 
 	iter = 0;
-	zx =  0;
+	zx = 0;
 	zy = 0;
 	zx2 = 0;
 	zy2 = 0;
@@ -48,11 +49,13 @@ void		*mandelbrot(void *ptr)
 	while (i < thread->y_max)
 	{
 		j = thread->x;
-		c.i = (i - FRACTAL_HEIGHT / 2) * thread->ondraw->fractal.mandelbrot.scale
+		c.i = (i - FRACTAL_HEIGHT / 2) *
+			thread->ondraw->fractal.mandelbrot.scale
 			+ thread->ondraw->fractal.mandelbrot.cy;
 		while (j < thread->x_max)
 		{
-			c.r = (j - FRACTAL_WIDTH / 2) * thread->ondraw->fractal.mandelbrot.scale
+			c.r = (j - FRACTAL_WIDTH / 2) *
+			thread->ondraw->fractal.mandelbrot.scale
 				+ thread->ondraw->fractal.mandelbrot.cx;
 			mandelbrot2(thread, i, j, c);
 			j++;

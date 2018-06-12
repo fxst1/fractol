@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 01:11:35 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 13:19:33 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/06/12 18:57:35 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void		*julia(void *ptr)
 			+ thread->ondraw->fractal.julia.cy;
 		while (j < thread->x_max)
 		{
-			c.r = (j - FRACTAL_WIDTH / 2) * (thread->ondraw->fractal.julia.scale)
+			c.r = (j - FRACTAL_WIDTH / 2) *
+				(thread->ondraw->fractal.julia.scale)
 				+ thread->ondraw->fractal.julia.cx;
 			julia2(thread, i, j, c);
 			j++;

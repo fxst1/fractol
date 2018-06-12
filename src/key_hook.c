@@ -6,7 +6,7 @@
 /*   By: fxst1 <fxst1@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/21 15:17:31 by fxst1             #+#    #+#             */
-/*   Updated: 2018/04/24 13:02:25 by fxst1            ###   ########.fr       */
+/*   Updated: 2018/06/12 19:16:48 by fjacquem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void		swap_colors(t_fractal *f)
 		f->draw_point = &psycolors;
 }
 
-int		key_hook(int keycode, void *ptr)
+int				key_hook(int keycode, void *ptr)
 {
 	t_fractal	*f;
 
